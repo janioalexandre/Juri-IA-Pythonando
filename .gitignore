@@ -1,0 +1,21 @@
+# venv
+.venv/
+
+# Django/pycache
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Media files
+media/
+
+# IDE/OS
+.vscode/
+.idea/
+.DS_Store
+
+# Migrations temporárias (opcional; costumo versionar)
+# */migrations/*.pyc
+
+# Env
+.env

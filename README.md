@@ -1,2 +1,3 @@
-# Juri-IA-Pythonando
-App Juri.IA 
+# Juri.IA da Pythonando
+Projeto web + IA com Python, Django e LangChain
+
