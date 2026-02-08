@@ -9,17 +9,17 @@
     }
     </style>
 {% endblock 'head' %}
-{% block 'body' %}
+{% block 'body' %} 
     <div class="max-w-7xl mx-auto p-10 space-y-10">
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-semibold tracking-tight">Clientes</h1>
-                <p class="text-slate-500 mt-1">Visao geral da sua base de clientes</p>
+                <p class="text-slate-500 mt-1">Visão geral da sua base de clientes</p>
             </div>
             <div class="flex gap-3">
                 <a href="#"
                    class="bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-200 transition-colors">
-                    Configuracoes da Empresa
+                    Configurações da Empresa
                 </a>
                 <button onclick="abrirModal()"
                         class="bg-black text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity">
@@ -41,7 +41,9 @@
                 <h2 class="text-3xl font-semibold mt-2">124</h2>
             </div>
             <div class="bg-white rounded-2xl p-6 shadow-sm">
-                <p class="text-xs text-slate-400">ATIVOS</p>
+                <p class="text-xs text-slate-
+                    </tbody>
+                </table>400">ATIVOS</p>
                 <h2 class="text-3xl font-semibold mt-2">87</h2>
             </div>
             <div class="bg-white rounded-2xl p-6 shadow-sm">
@@ -75,15 +77,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for cliente in clientes %}
+                        {% for cliente in clientes %}      
                             <tr class="bg-[#f9fafc] rounded-xl">
                                 <td class="p-4 font-medium"><a href="{% url 'cliente' cliente.id %}">{{ cliente.nome }}</a></td>
                                 <td class="text-center">{{ cliente.email }}</td>
                                 <td class="text-center">{{ cliente.get_tipo_display }}</td>
                                 <td class="text-center">
-                                    <span class="{% if cliente.status %}bg-emerald-100 text-emerald-700{% else %}bg-red-100 text-red-700{% endif %} px-3 py-1 rounded-full text-xs">
-                                        {% if cliente.status %}Ativo{% else %}Inativo{% endif %}
-                                    </span>
+                                    <span class="{% if cliente.get_status_display %} bg-emerald-100 text-emerald-70 {% else %} bg-red-100 text-red-70 {% endif %}0 px-3 py-1 rounded-full text-xs">{% if cliente.get_status_display %} Ativo {% else %} Inativo {% endif %}</span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -132,8 +132,8 @@
                                 id="tipo"
                                 required
                                 class="w-full border border-slate-200 rounded-xl pl-4 pr-10 py-2.5 text-sm focus:ring-2 focus:ring-slate-900/20 focus:border-slate-300 outline-none">
-                            <option value="PF">Pessoa Fisica</option>
-                            <option value="PJ">Pessoa Juridica</option>
+                            <option value="PF">Pessoa Física</option>
+                            <option value="PJ">Pessoa Jurídica</option>
                         </select>
                     </div>
                     <div class="flex items-center">
@@ -163,11 +163,11 @@
         function abrirModal() {
             document.getElementById('modal-novo-cliente').style.display = 'flex';
         }
-
+        
         function fecharModal() {
             document.getElementById('modal-novo-cliente').style.display = 'none';
         }
-
+        
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 fecharModal();

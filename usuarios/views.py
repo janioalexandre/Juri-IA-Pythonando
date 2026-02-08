@@ -1,14 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.contrib.messages import constants
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-
 from .models import Cliente, Documentos
-
+from ia.agents import JuriAi
 
 def cadastro(request):
     if request.method == 'GET':
@@ -17,28 +16,27 @@ def cadastro(request):
         username = request.POST.get('username')
         senha = request.POST.get('senha')
         confirmar_senha = request.POST.get('confirmar_senha')
-        
+
         if not senha == confirmar_senha:
             messages.add_message(request, constants.ERROR, 'Senha e confirmar senha não são iguais.')
             return redirect('cadastro')
-            
+        
         if len(senha) < 6:
             messages.add_message(request, constants.ERROR, 'Sua senha deve ter pelo meno 6 caracteres.')
             return redirect('cadastro')
-
+        
         users = User.objects.filter(username=username)
         
         if users.exists():
             messages.add_message(request, constants.ERROR, 'Já existe um usuário com esse username.')
             return redirect('cadastro')
         
-        user = User.objects.create_user(
+        User.objects.create_user(
             username=username,
             password=senha
         )
-        auth.login(request, user)
-        return redirect('clientes')
 
+        return redirect('login')
 
 def login(request):
     if request.method == 'GET':
@@ -54,9 +52,8 @@ def login(request):
         else:
             messages.add_message(request, constants.ERROR, 'Usuário ou senha inválidos.')
             return redirect('login')
+        
 
-
-@login_required
 def clientes(request):
     if request.method == 'GET':
         clientes = Cliente.objects.filter(user=request.user)
@@ -66,7 +63,7 @@ def clientes(request):
         email = request.POST.get('email')
         tipo = request.POST.get('tipo')
         status = request.POST.get('status') == 'on'
-        
+
         Cliente.objects.create(
             nome=nome,
             email=email,
@@ -77,7 +74,6 @@ def clientes(request):
 
         messages.add_message(request, constants.SUCCESS, 'Cliente cadastrado com sucesso!')
         return redirect('clientes')
-
 
 def cliente(request, id):
     cliente = Cliente.objects.get(id=id)
@@ -95,6 +91,8 @@ def cliente(request, id):
             arquivo=documento,
             data_upload=data
         )
+
         documentos.save()
 
         return redirect(reverse('cliente', kwargs={'id': cliente.id}))
+    
